@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Solicitar reset</title></head>
+<body>
+  <h2>Solicitar restablecimiento de contraseña</h2>
+  <form id="f">
+    <label>Email: <input type="email" id="email" required></label>
+    <button type="submit">Enviar</button>
+  </form>
+  <script>
+    document.getElementById('f').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      await fetch('/api/auth/reset-request', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email})
+      });
+      alert('Si el email existe, recibirás un link.');
+    });
+  </script>
+</body>
+</html>
