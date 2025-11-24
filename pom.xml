@@ -6,11 +6,14 @@
   <groupId>com.example</groupId>
   <artifactId>actividad2jc</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
   <properties>
+    <!-- Ajusta esta versión si quieres compilar con Java 23 -->
     <java.version>21</java.version>
     <spring.boot.version>3.2.12</spring.boot.version>
     <maven.compiler.release>21</maven.compiler.release>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -22,6 +25,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <!-- Web -->
     <dependency>
@@ -52,11 +56,12 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
-    <!-- Lombok (optional convenience) -->
+    <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <optional>true</optional>
+      <version>1.18.30</version>
+      <scope>provided</scope> <!-- mejor provided para evitar incluirlo en el jar -->
     </dependency>
 
     <!-- Testing -->
@@ -65,13 +70,48 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
+
   <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Recomiendo declarar la versión explícita del plugin de Spring Boot -->
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring.boot.version}</version>
+        </plugin>
+
+        <!-- Plugin del compilador: asegura release y el processor para lombok -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.11.0</version>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.30</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
+      <!-- Se usa aquí sin versión porque está controlada en pluginManagement,
+           pero si quieres puedes repetir la versión aquí en lugar de pluginManagement -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
